@@ -24,6 +24,8 @@ public class Board {
     int[] localbK = new int[2];
     int[] wK = new int[2];
     int[] localwK = new int[2];
+    ArrayList<String> pathToCheckMateB = new ArrayList<>();
+    ArrayList<String> pathToCheckMateW = new ArrayList<>();
     public char getColorGaming() {
         return colorGaming;
     }
@@ -161,39 +163,47 @@ public class Board {
                                     if (!(this.fields[i - k][j - k] == null)) {// && this.fields[row1-i][col1-i].getColor() == figure.getColor()) {
                                         otherFigureFlag = true;
                                     }
+                                    pathToCheckMateB.add((i-k) + " " + (j-k));
                                 } else if (i - localbK[0] > 0 && j - localbK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
                                     if (!(this.fields[i - k][j + k] == null)) {// && this.fields[row1-i][col1+i].getColor() == figure.getColor()) {
                                         otherFigureFlag = true;
                                     }
+                                    pathToCheckMateB.add((i-k) + " " + (j+k));
                                 } else if (i - localbK[0] < 0 && j - localbK[1] > 0 && !this.fields[i][j].getName().equals("N")) {
                                     if (!(this.fields[i + k][j - k] == null)) {// && this.fields[row1+i][col1-i].getColor() == figure.getColor()) {
                                         otherFigureFlag = true;
                                     }
+                                    pathToCheckMateB.add((i+k) + " " + (j-k));
                                 } else if (i - localbK[0] < 0 && j - localbK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
                                     if (!(this.fields[i + k][j + k] == null)) {// && this.fields[row1+i][col1+i].getColor() == figure.getColor()) {
                                         otherFigureFlag = true;
                                     }
+                                    pathToCheckMateB.add((i+k) + " " + (j+k));
                                 } else if (i - localbK[0] < 0 && j - localbK[1] == 0 && !this.fields[i][j].getName().equals("N")) {
                                     if (!(this.fields[i + k][j] == null)) { // && this.fields[row1+i][col1].getColor() == figure.getColor()) {
                                         otherFigureFlag = true;
                                     }
+                                    pathToCheckMateB.add((i+k) + " " + (j));
                                 } else if (i - localbK[0] > 0 && j - localbK[1] == 0 && !this.fields[i][j].getName().equals("N")) {
                                     if (!(this.fields[i - k][j] == null)) {// && this.fields[row1-i][col1].getColor() == figure.getColor()) {
                                         otherFigureFlag = true;
                                     }
+                                    pathToCheckMateB.add((i-k) + " " + (j));
                                 } else if (i - localbK[0] == 0 && j - localbK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
                                     if (!(this.fields[i][j + k] == null)) { // && this.fields[row1][col1+i].getColor() == figure.getColor()) {
                                         otherFigureFlag = true;
                                     }
+                                    pathToCheckMateB.add((i) + " " + (j+k));
                                 } else if (i - localbK[0] == 0 && j - localbK[1] > 0 && !this.fields[i][j].getName().equals("N")) {
                                     if (!(this.fields[i][j - k] == null)) {// && this.fields[row1][col1-i].getColor() == figure.getColor()) {
                                         otherFigureFlag = true;
                                     }
+                                    pathToCheckMateB.add((i) + " " + (j-k));
                                 }
                             }
                         }
                         if (otherFigureFlag) {
-                            //return false;
+                            pathToCheckMateB.clear();
                         } else {
                             this.colorOfCheckedKing = 'b';
                             return true;
@@ -207,41 +217,49 @@ public class Board {
                                 if (!(this.fields[i-k][j-k]==null)) {// && this.fields[row1-i][col1-i].getColor() == figure.getColor()) {
                                     otherFigureFlag = true;
                                 }
+                                pathToCheckMateW.add((i-k) + " " + (j-k));
                             } else if (i-localwK[0] > 0 && j - localwK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
                                 if (!(this.fields[i-k][j+k]==null)) {// && this.fields[row1-i][col1+i].getColor() == figure.getColor()) {
                                     otherFigureFlag = true;
                                 }
+                                pathToCheckMateW.add((i-k) + " " + (j+k));
                             } else if (i-localwK[0] < 0 && j - localwK[1] > 0  && !this.fields[i][j].getName().equals("N")) {
                                 if (!(this.fields[i+k][j-k]==null)) {// && this.fields[row1+i][col1-i].getColor() == figure.getColor()) {
                                     otherFigureFlag = true;
                                 }
+                                pathToCheckMateW.add((i+k) + " " + (j-k));
                             } else if (i-localwK[0] < 0 && j - localwK[1] < 0  && !this.fields[i][j].getName().equals("N")) {
                                 if (!(this.fields[i+k][j+k]==null)) {// && this.fields[row1+i][col1+i].getColor() == figure.getColor()) {
                                     otherFigureFlag = true;
                                 }
+                                pathToCheckMateW.add((i+k) + " " + (j+k));
                             } else if (i-localwK[0] < 0 && j - localwK[1] == 0 && !this.fields[i][j].getName().equals("N")) {
                                 if (!(this.fields[i+k][j]==null)) { // && this.fields[row1+i][col1].getColor() == figure.getColor()) {
                                     otherFigureFlag = true;
                                 }
+                                pathToCheckMateW.add((i+k) + " " + (j));
                             } else if (i-localwK[0] > 0 && j - localwK[1] == 0  && !this.fields[i][j].getName().equals("N")) {
                                 if (!(this.fields[i-k][j]==null)) {// && this.fields[row1-i][col1].getColor() == figure.getColor()) {
                                     otherFigureFlag = true;
                                 }
+                                pathToCheckMateW.add((i-k) + " " + (j));
                             } else if (i-localwK[0] == 0 && j - localwK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
                                 if (!(this.fields[i][j+k]==null)) { // && this.fields[row1][col1+i].getColor() == figure.getColor()) {
                                     otherFigureFlag = true;
                                 }
+                                pathToCheckMateW.add((i) + " " + (j+k));
                             } else if (i-localwK[0] == 0 && j - localwK[1] > 0 && !this.fields[i][j].getName().equals("N")) {
                                 if (!(this.fields[i][j-k]==null)) {// && this.fields[row1][col1-i].getColor() == figure.getColor()) {
                                     otherFigureFlag = true;
                                 }
+                                pathToCheckMateW.add((i) + " " + (j+k));
                             }
                             if (!otherFigureFlag) {
                                 break;
                             }
                         }
                         if (otherFigureFlag) {
-                            //return false;
+                            pathToCheckMateW.clear();
                         } else {
                             this.colorOfCheckedKing = 'w';
                             return true;
@@ -250,6 +268,28 @@ public class Board {
                 }
             }
         }
+        return false;
+    }
+
+    public boolean canSaveKing() {
+        for (int i = 0; i < pathToCheckMateB.size(); i++) {
+            for (int j = 0; j < fields.length; j++) {
+                for (int k = 0; k < fields[0].length; k++) {
+                    if (!pathToCheckMateB.isEmpty() && (this.fields[j][k] != null)
+                            && (this.fields[j][k].canMove(j, k, Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(2)))))
+                            && this.fields[j][k].getColor() == 'b'
+                            && canMoveWithAccountOfOtherFigures(j, k, Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(2))))) {
+                        return true;
+                    } else if (!pathToCheckMateW.isEmpty() && (this.fields[j][k] != null)
+                            && (this.fields[j][k].canMove(j, k, Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(2)))))
+                            && this.fields[j][k].getColor() == 'w'
+                            && canMoveWithAccountOfOtherFigures(j, k, Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(2))))){
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
@@ -263,277 +303,281 @@ public class Board {
         if (isCheck()) {
 
             if (this.colorOfCheckedKing == 'b') {
-                int[] tmpBK = localbK;
-                if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0]-1, tmpBK[1]) && ((tmpBK[0] >=0 && tmpBK[0] < 8 )&&(tmpBK[1] >=0 && tmpBK[1] < 8)&&(tmpBK[0]-1 >=0))) {
-                    this.fields[tmpBK[0]-1][tmpBK[1]] = new King("K", 'b');
-                    this.fields[tmpBK[0]][tmpBK[1]] = null;
-                    if (isCheck()) {
-                        this.localbK[0] = tmpBK[0]+1;
-                        this.fields[tmpBK[0]-1][tmpBK[1]] = null;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                if (!canSaveKing()) {
+                    int[] tmpBK = localbK;
+                    if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0] - 1, tmpBK[1]) && ((tmpBK[0] >= 0 && tmpBK[0] < 8) && (tmpBK[1] >= 0 && tmpBK[1] < 8) && (tmpBK[0] - 1 >= 0))) {
+                        this.fields[tmpBK[0] - 1][tmpBK[1]] = new King("K", 'b');
+                        this.fields[tmpBK[0]][tmpBK[1]] = null;
+                        if (isCheck()) {
+                            this.localbK[0] = tmpBK[0] + 1;
+                            this.fields[tmpBK[0] - 1][tmpBK[1]] = null;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
 
-                        checkMate = "b";
-                    } else {
-                        this.localbK[0] = tmpBK[0]+1;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        this.fields[tmpBK[0]-1][tmpBK[1]] = null;
-                        //checkMate = "";
-                        canExitFromCheckMateB = true;
-                    }
+                            checkMate = "b";
+                        } else {
+                            this.localbK[0] = tmpBK[0] + 1;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            this.fields[tmpBK[0] - 1][tmpBK[1]] = null;
+                            //checkMate = "";
+                            canExitFromCheckMateB = true;
+                        }
 
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0]+1, tmpBK[1]) && ((tmpBK[0] >=0 && tmpBK[0] < 8 )&&(tmpBK[1] >=0 && tmpBK[1] < 8) && tmpBK[0]+1 < 8 )) {
-                    this.fields[tmpBK[0]+1][tmpBK[1]] = new King("K", 'b');
-                    this.fields[tmpBK[0]][tmpBK[1]] = null;
-                    if (isCheck()) {
-                        this.localbK[0] = tmpBK[0]-1;
-                        this.fields[tmpBK[0]+1][tmpBK[1]] = null;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        checkMate = "b";
-                    } else {
-                        this.localbK[0] = tmpBK[0]-1;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        this.fields[tmpBK[0]+1][tmpBK[1]] = null;
-                        //checkMate = "";
-                        canExitFromCheckMateB = true;
                     }
+                    if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0] + 1, tmpBK[1]) && ((tmpBK[0] >= 0 && tmpBK[0] < 8) && (tmpBK[1] >= 0 && tmpBK[1] < 8) && tmpBK[0] + 1 < 8)) {
+                        this.fields[tmpBK[0] + 1][tmpBK[1]] = new King("K", 'b');
+                        this.fields[tmpBK[0]][tmpBK[1]] = null;
+                        if (isCheck()) {
+                            this.localbK[0] = tmpBK[0] - 1;
+                            this.fields[tmpBK[0] + 1][tmpBK[1]] = null;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            checkMate = "b";
+                        } else {
+                            this.localbK[0] = tmpBK[0] - 1;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            this.fields[tmpBK[0] + 1][tmpBK[1]] = null;
+                            //checkMate = "";
+                            canExitFromCheckMateB = true;
+                        }
 
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0], tmpBK[1]-1) && ((tmpBK[0] >=0 && tmpBK[0] < 8 )&&(tmpBK[1] >=0 && tmpBK[1] < 8)&&(tmpBK[1]-1 >=0))) {
-                    this.fields[tmpBK[0]][tmpBK[1]-1] = new King("K", 'b');
-                    this.fields[tmpBK[0]][tmpBK[1]] = null;
-                    if (isCheck()) {
-                        this.localbK[1] = tmpBK[1]+1;
-                        this.fields[tmpBK[0]][tmpBK[1]-1] = null;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        checkMate = "b";
-                    } else {
-                        this.localbK[1] = tmpBK[1] + 1;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        this.fields[tmpBK[0]][tmpBK[1] - 1] = null;
-                        //checkMate = "";
-                        canExitFromCheckMateB = true;
                     }
+                    if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0], tmpBK[1] - 1) && ((tmpBK[0] >= 0 && tmpBK[0] < 8) && (tmpBK[1] >= 0 && tmpBK[1] < 8) && (tmpBK[1] - 1 >= 0))) {
+                        this.fields[tmpBK[0]][tmpBK[1] - 1] = new King("K", 'b');
+                        this.fields[tmpBK[0]][tmpBK[1]] = null;
+                        if (isCheck()) {
+                            this.localbK[1] = tmpBK[1] + 1;
+                            this.fields[tmpBK[0]][tmpBK[1] - 1] = null;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            checkMate = "b";
+                        } else {
+                            this.localbK[1] = tmpBK[1] + 1;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            this.fields[tmpBK[0]][tmpBK[1] - 1] = null;
+                            //checkMate = "";
+                            canExitFromCheckMateB = true;
+                        }
 
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0], tmpBK[1]+1) && ((tmpBK[0] >=0 && tmpBK[0] < 8 )&&(tmpBK[1] >=0 && tmpBK[1] < 8) && tmpBK[1]+1 < 8)) {
-                    this.fields[tmpBK[0]][tmpBK[1] + 1] = new King("K", 'b');
-                    this.fields[tmpBK[0]][tmpBK[1]] = null;
-                    if (isCheck()) {
-                        this.localbK[1] = tmpBK[1]-1;
-                        this.fields[tmpBK[0]][tmpBK[1] + 1] = null;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        checkMate = "b";
-                    } else {
-                        this.localbK[1] = tmpBK[1] - 1;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        this.fields[tmpBK[0]][tmpBK[1] + 1] = null;
-                        //checkMate = "";
-                        canExitFromCheckMateB = true;
                     }
+                    if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0], tmpBK[1] + 1) && ((tmpBK[0] >= 0 && tmpBK[0] < 8) && (tmpBK[1] >= 0 && tmpBK[1] < 8) && tmpBK[1] + 1 < 8)) {
+                        this.fields[tmpBK[0]][tmpBK[1] + 1] = new King("K", 'b');
+                        this.fields[tmpBK[0]][tmpBK[1]] = null;
+                        if (isCheck()) {
+                            this.localbK[1] = tmpBK[1] - 1;
+                            this.fields[tmpBK[0]][tmpBK[1] + 1] = null;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            checkMate = "b";
+                        } else {
+                            this.localbK[1] = tmpBK[1] - 1;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            this.fields[tmpBK[0]][tmpBK[1] + 1] = null;
+                            //checkMate = "";
+                            canExitFromCheckMateB = true;
+                        }
 
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0]-1, tmpBK[1]+1) && ((tmpBK[0] >=0 && tmpBK[0] < 8 )&&(tmpBK[1] >=0 && tmpBK[1] < 8)&&(tmpBK[0]-1 >=0)&&tmpBK[1]+1 < 8)) {
-                    this.fields[tmpBK[0]-1][tmpBK[1] + 1] = new King("K", 'b');
-                    this.fields[tmpBK[0]][tmpBK[1]] = null;
-                    if (isCheck()) {
-                        this.localbK[0] = tmpBK[0]+1;
-                        this.localbK[1] = tmpBK[1]-1;
-                        this.fields[tmpBK[0]-1][tmpBK[1] + 1] = null;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        checkMate = "b";
-                    } else {
-                        this.localbK[0] = tmpBK[0] + 1;
-                        this.localbK[1] = tmpBK[1] - 1;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        this.fields[tmpBK[0] - 1][tmpBK[1] + 1] = null;
-                        //checkMate = "";
-                        canExitFromCheckMateB = true;
                     }
+                    if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0] - 1, tmpBK[1] + 1) && ((tmpBK[0] >= 0 && tmpBK[0] < 8) && (tmpBK[1] >= 0 && tmpBK[1] < 8) && (tmpBK[0] - 1 >= 0) && tmpBK[1] + 1 < 8)) {
+                        this.fields[tmpBK[0] - 1][tmpBK[1] + 1] = new King("K", 'b');
+                        this.fields[tmpBK[0]][tmpBK[1]] = null;
+                        if (isCheck()) {
+                            this.localbK[0] = tmpBK[0] + 1;
+                            this.localbK[1] = tmpBK[1] - 1;
+                            this.fields[tmpBK[0] - 1][tmpBK[1] + 1] = null;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            checkMate = "b";
+                        } else {
+                            this.localbK[0] = tmpBK[0] + 1;
+                            this.localbK[1] = tmpBK[1] - 1;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            this.fields[tmpBK[0] - 1][tmpBK[1] + 1] = null;
+                            //checkMate = "";
+                            canExitFromCheckMateB = true;
+                        }
 
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0]+1, tmpBK[1]+1) && ((tmpBK[0] >=0 && tmpBK[0] < 8 )&&(tmpBK[1] >=0 && tmpBK[1] < 8)&&(tmpBK[0]+1 < 8 ) && tmpBK[1]+1 < 8)) {
-                    this.fields[tmpBK[0]+1][tmpBK[1] + 1] = new King("K", 'b');
-                    this.fields[tmpBK[0]][tmpBK[1]] = null;
-                    if (isCheck()) {
-                        this.localbK[0] = tmpBK[0]+1;
-                        this.localbK[1] = tmpBK[1]-1;
-                        this.fields[tmpBK[0]+1][tmpBK[1] + 1] = null;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        checkMate = "b";
-                    } else {
-                        this.localbK[0] = tmpBK[0] + 1;
-                        this.localbK[1] = tmpBK[1] - 1;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        this.fields[tmpBK[0] + 1][tmpBK[1] + 1] = null;
-                        //checkMate = "";
-                        canExitFromCheckMateB = true;
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0]-1, tmpBK[1]-1) && ((tmpBK[0] >=0 && tmpBK[0] < 8 )&&(tmpBK[1] >=0 && tmpBK[1] < 8)&&(tmpBK[0]-1 >=0)&&(tmpBK[1]-1 >=0))) {
-                    this.fields[tmpBK[0]-1][tmpBK[1]-1] = new King("K", 'b');
-                    this.fields[tmpBK[0]][tmpBK[1]] = null;
-                    if (isCheck()) {
-                        this.localbK[0] = tmpBK[0]+1;
-                        this.localbK[1] = tmpBK[1]+1;
-                        this.fields[tmpBK[0]-1][tmpBK[1]-1] = null;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        checkMate = "b";
-                    } else {
-                        this.localbK[0] = tmpBK[0] + 1;
-                        this.localbK[1] = tmpBK[1] + 1;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        this.fields[tmpBK[0] - 1][tmpBK[1] - 1] = null;
-                        //checkMate = "";
-                        canExitFromCheckMateB = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0] + 1, tmpBK[1] + 1) && ((tmpBK[0] >= 0 && tmpBK[0] < 8) && (tmpBK[1] >= 0 && tmpBK[1] < 8) && (tmpBK[0] + 1 < 8) && tmpBK[1] + 1 < 8)) {
+                        this.fields[tmpBK[0] + 1][tmpBK[1] + 1] = new King("K", 'b');
+                        this.fields[tmpBK[0]][tmpBK[1]] = null;
+                        if (isCheck()) {
+                            this.localbK[0] = tmpBK[0] + 1;
+                            this.localbK[1] = tmpBK[1] - 1;
+                            this.fields[tmpBK[0] + 1][tmpBK[1] + 1] = null;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            checkMate = "b";
+                        } else {
+                            this.localbK[0] = tmpBK[0] + 1;
+                            this.localbK[1] = tmpBK[1] - 1;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            this.fields[tmpBK[0] + 1][tmpBK[1] + 1] = null;
+                            //checkMate = "";
+                            canExitFromCheckMateB = true;
+                        }
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0]+1, tmpBK[1]-1) && ((tmpBK[0] >=0 && tmpBK[0] < 8 )&&(tmpBK[1] >=0 && tmpBK[1] < 8)&&tmpBK[0]+1 < 8 && (tmpBK[1]-1 >=0))) {
-                    this.fields[tmpBK[0]+1][tmpBK[1]-1] = new King("K", 'b');
-                    this.fields[tmpBK[0]][tmpBK[1]] = null;
-                    if (isCheck()) {
-                        this.localbK[0] = tmpBK[0]-1;
-                        this.localbK[1] = tmpBK[1]+1;
-                        this.fields[tmpBK[0]+1][tmpBK[1]-1] = null;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        checkMate = "b";
-                    } else {
-                        this.localbK[0] = tmpBK[0] - 1;
-                        this.localbK[1] = tmpBK[1] + 1;
-                        this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
-                        this.fields[tmpBK[0] + 1][tmpBK[1] - 1] = null;
-                        canExitFromCheckMateB = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0] - 1, tmpBK[1] - 1) && ((tmpBK[0] >= 0 && tmpBK[0] < 8) && (tmpBK[1] >= 0 && tmpBK[1] < 8) && (tmpBK[0] - 1 >= 0) && (tmpBK[1] - 1 >= 0))) {
+                        this.fields[tmpBK[0] - 1][tmpBK[1] - 1] = new King("K", 'b');
+                        this.fields[tmpBK[0]][tmpBK[1]] = null;
+                        if (isCheck()) {
+                            this.localbK[0] = tmpBK[0] + 1;
+                            this.localbK[1] = tmpBK[1] + 1;
+                            this.fields[tmpBK[0] - 1][tmpBK[1] - 1] = null;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            checkMate = "b";
+                        } else {
+                            this.localbK[0] = tmpBK[0] + 1;
+                            this.localbK[1] = tmpBK[1] + 1;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            this.fields[tmpBK[0] - 1][tmpBK[1] - 1] = null;
+                            //checkMate = "";
+                            canExitFromCheckMateB = true;
+                        }
+                    }
+                    if (canMoveWithAccountOfOtherFigures(tmpBK[0], tmpBK[1], tmpBK[0] + 1, tmpBK[1] - 1) && ((tmpBK[0] >= 0 && tmpBK[0] < 8) && (tmpBK[1] >= 0 && tmpBK[1] < 8) && tmpBK[0] + 1 < 8 && (tmpBK[1] - 1 >= 0))) {
+                        this.fields[tmpBK[0] + 1][tmpBK[1] - 1] = new King("K", 'b');
+                        this.fields[tmpBK[0]][tmpBK[1]] = null;
+                        if (isCheck()) {
+                            this.localbK[0] = tmpBK[0] - 1;
+                            this.localbK[1] = tmpBK[1] + 1;
+                            this.fields[tmpBK[0] + 1][tmpBK[1] - 1] = null;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            checkMate = "b";
+                        } else {
+                            this.localbK[0] = tmpBK[0] - 1;
+                            this.localbK[1] = tmpBK[1] + 1;
+                            this.fields[tmpBK[0]][tmpBK[1]] = new King("K", 'b');
+                            this.fields[tmpBK[0] + 1][tmpBK[1] - 1] = null;
+                            canExitFromCheckMateB = true;
+                        }
                     }
                 }
             } else {
-                int[] tmpWK = localwK;
-                if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0]-1, tmpWK[1]) && ((tmpWK[0] >=0 && tmpWK[0] < 8 )&&(tmpWK[1] >=0 && tmpWK[1] < 8)&&(tmpWK[0]-1 >=0))) {
-                    this.fields[tmpWK[0]-1][tmpWK[1]] = new King("K", 'w');
-                    this.fields[tmpWK[0]][tmpWK[1]] = null;
-                    if (isCheck()) {
-                        this.localwK[0] = tmpWK[0]+1;
-                        this.fields[tmpWK[0]-1][tmpWK[1]] = null;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        checkMate = "w";
+                if (!canSaveKing()) {
+                    int[] tmpWK = localwK;
+                    if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0] - 1, tmpWK[1]) && ((tmpWK[0] >= 0 && tmpWK[0] < 8) && (tmpWK[1] >= 0 && tmpWK[1] < 8) && (tmpWK[0] - 1 >= 0))) {
+                        this.fields[tmpWK[0] - 1][tmpWK[1]] = new King("K", 'w');
+                        this.fields[tmpWK[0]][tmpWK[1]] = null;
+                        if (isCheck()) {
+                            this.localwK[0] = tmpWK[0] + 1;
+                            this.fields[tmpWK[0] - 1][tmpWK[1]] = null;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            checkMate = "w";
 
-                    } else {
-                        this.localwK[0] = tmpWK[0] + 1;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        this.fields[tmpWK[0] - 1][tmpWK[1]] = null;
-                        canExitFromCheckMateW = true;
+                        } else {
+                            this.localwK[0] = tmpWK[0] + 1;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            this.fields[tmpWK[0] - 1][tmpWK[1]] = null;
+                            canExitFromCheckMateW = true;
+                        }
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0]+1, tmpWK[1]) && ((tmpWK[0] >=0 && tmpWK[0] < 8 )&&(tmpWK[1] >=0 && tmpWK[1] < 8) && tmpWK[0]+1 < 8 )) {
-                    this.fields[tmpWK[0]+1][tmpWK[1]] = new King("K", 'w');
-                    this.fields[tmpWK[0]][tmpWK[1]] = null;
-                    if (isCheck()) {
-                        this.localwK[0] = tmpWK[0]-1;
-                        this.fields[tmpWK[0]+1][tmpWK[1]] = null;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        checkMate = "w";
-                    } else {
-                        this.localwK[0] = tmpWK[0] - 1;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        this.fields[tmpWK[0] + 1][tmpWK[1]] = null;
-                        canExitFromCheckMateW = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0] + 1, tmpWK[1]) && ((tmpWK[0] >= 0 && tmpWK[0] < 8) && (tmpWK[1] >= 0 && tmpWK[1] < 8) && tmpWK[0] + 1 < 8)) {
+                        this.fields[tmpWK[0] + 1][tmpWK[1]] = new King("K", 'w');
+                        this.fields[tmpWK[0]][tmpWK[1]] = null;
+                        if (isCheck()) {
+                            this.localwK[0] = tmpWK[0] - 1;
+                            this.fields[tmpWK[0] + 1][tmpWK[1]] = null;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            checkMate = "w";
+                        } else {
+                            this.localwK[0] = tmpWK[0] - 1;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            this.fields[tmpWK[0] + 1][tmpWK[1]] = null;
+                            canExitFromCheckMateW = true;
+                        }
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0], tmpWK[1]-1) && ((tmpWK[0] >=0 && tmpWK[0] < 8 )&&(tmpWK[1] >=0 && tmpWK[1] < 8)&&(tmpWK[1]-1 >=0))) {
-                    this.fields[tmpWK[0]][tmpWK[1]-1] = new King("K", 'w');
-                    this.fields[tmpWK[0]][tmpWK[1]] = null;
-                    if (isCheck()) {
-                        this.localwK[1] = tmpWK[1]+1;
-                        this.fields[tmpWK[0]][tmpWK[1]-1] = null;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        checkMate = "w";
-                    } else {
-                        this.localwK[1] = tmpWK[1] + 1;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        this.fields[tmpWK[0]][tmpWK[1] - 1] = null;
-                        canExitFromCheckMateW = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0], tmpWK[1] - 1) && ((tmpWK[0] >= 0 && tmpWK[0] < 8) && (tmpWK[1] >= 0 && tmpWK[1] < 8) && (tmpWK[1] - 1 >= 0))) {
+                        this.fields[tmpWK[0]][tmpWK[1] - 1] = new King("K", 'w');
+                        this.fields[tmpWK[0]][tmpWK[1]] = null;
+                        if (isCheck()) {
+                            this.localwK[1] = tmpWK[1] + 1;
+                            this.fields[tmpWK[0]][tmpWK[1] - 1] = null;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            checkMate = "w";
+                        } else {
+                            this.localwK[1] = tmpWK[1] + 1;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            this.fields[tmpWK[0]][tmpWK[1] - 1] = null;
+                            canExitFromCheckMateW = true;
+                        }
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0], tmpWK[1]+1) && ((tmpWK[0] >=0 && tmpWK[0] < 8 )&&(tmpWK[1] >=0 && tmpWK[1] < 8) && tmpWK[1]+1 < 8)) {
-                    this.fields[tmpWK[0]][tmpWK[1] + 1] = new King("K", 'w');
-                    this.fields[tmpWK[0]][tmpWK[1]] = null;
-                    if (isCheck()) {
-                        this.localwK[1] = tmpWK[1]-1;
-                        this.fields[tmpWK[0]][tmpWK[1] + 1] = null;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        checkMate = "w";
-                    } else {
-                        this.localwK[1] = tmpWK[1] - 1;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        this.fields[tmpWK[0]][tmpWK[1] + 1] = null;
-                        canExitFromCheckMateW = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0], tmpWK[1] + 1) && ((tmpWK[0] >= 0 && tmpWK[0] < 8) && (tmpWK[1] >= 0 && tmpWK[1] < 8) && tmpWK[1] + 1 < 8)) {
+                        this.fields[tmpWK[0]][tmpWK[1] + 1] = new King("K", 'w');
+                        this.fields[tmpWK[0]][tmpWK[1]] = null;
+                        if (isCheck()) {
+                            this.localwK[1] = tmpWK[1] - 1;
+                            this.fields[tmpWK[0]][tmpWK[1] + 1] = null;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            checkMate = "w";
+                        } else {
+                            this.localwK[1] = tmpWK[1] - 1;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            this.fields[tmpWK[0]][tmpWK[1] + 1] = null;
+                            canExitFromCheckMateW = true;
+                        }
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0]-1, tmpWK[1]+1) && ((tmpWK[0] >=0 && tmpWK[0] < 8 )&&(tmpWK[1] >=0 && tmpWK[1] < 8)&&(tmpWK[0]-1 >=0)&&tmpWK[1]+1 < 8)) {
-                    this.fields[tmpWK[0]-1][tmpWK[1] + 1] = new King("K", 'w');
-                    this.fields[tmpWK[0]][tmpWK[1]] = null;
-                    if (isCheck()) {
-                        this.localwK[0] = tmpWK[0]+1;
-                        this.localwK[1] = tmpWK[1]-1;
-                        this.fields[tmpWK[0]-1][tmpWK[1] + 1] = null;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        checkMate = "w";
-                    } else {
-                        this.localwK[0] = tmpWK[0] + 1;
-                        this.localwK[1] = tmpWK[1] - 1;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        this.fields[tmpWK[0] - 1][tmpWK[1] + 1] = null;
-                        canExitFromCheckMateW = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0] - 1, tmpWK[1] + 1) && ((tmpWK[0] >= 0 && tmpWK[0] < 8) && (tmpWK[1] >= 0 && tmpWK[1] < 8) && (tmpWK[0] - 1 >= 0) && tmpWK[1] + 1 < 8)) {
+                        this.fields[tmpWK[0] - 1][tmpWK[1] + 1] = new King("K", 'w');
+                        this.fields[tmpWK[0]][tmpWK[1]] = null;
+                        if (isCheck()) {
+                            this.localwK[0] = tmpWK[0] + 1;
+                            this.localwK[1] = tmpWK[1] - 1;
+                            this.fields[tmpWK[0] - 1][tmpWK[1] + 1] = null;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            checkMate = "w";
+                        } else {
+                            this.localwK[0] = tmpWK[0] + 1;
+                            this.localwK[1] = tmpWK[1] - 1;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            this.fields[tmpWK[0] - 1][tmpWK[1] + 1] = null;
+                            canExitFromCheckMateW = true;
+                        }
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0]+1, tmpWK[1]+1) && ((tmpWK[0] >=0 && tmpWK[0] < 8 )&&(tmpWK[1] >=0 && tmpWK[1] < 8)&&(tmpWK[0]+1 < 8 ) && tmpWK[1]+1 < 8)) {
-                    this.fields[tmpWK[0] + 1][tmpWK[1] + 1] = new King("K", 'w');
-                    this.fields[tmpWK[0]][tmpWK[1]] = null;
-                    if (isCheck()) {
-                        this.localwK[0] = tmpWK[0] - 1;
-                        this.localwK[1] = tmpWK[1] - 1;
-                        this.fields[tmpWK[0] + 1][tmpWK[1] + 1] = null;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        checkMate = "w";
-                    } else {
-                        this.localwK[0] = tmpWK[0] - 1;
-                        this.localwK[1] = tmpWK[1] - 1;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        this.fields[tmpWK[0] + 1][tmpWK[1] + 1] = null;
-                        canExitFromCheckMateW = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0] + 1, tmpWK[1] + 1) && ((tmpWK[0] >= 0 && tmpWK[0] < 8) && (tmpWK[1] >= 0 && tmpWK[1] < 8) && (tmpWK[0] + 1 < 8) && tmpWK[1] + 1 < 8)) {
+                        this.fields[tmpWK[0] + 1][tmpWK[1] + 1] = new King("K", 'w');
+                        this.fields[tmpWK[0]][tmpWK[1]] = null;
+                        if (isCheck()) {
+                            this.localwK[0] = tmpWK[0] - 1;
+                            this.localwK[1] = tmpWK[1] - 1;
+                            this.fields[tmpWK[0] + 1][tmpWK[1] + 1] = null;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            checkMate = "w";
+                        } else {
+                            this.localwK[0] = tmpWK[0] - 1;
+                            this.localwK[1] = tmpWK[1] - 1;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            this.fields[tmpWK[0] + 1][tmpWK[1] + 1] = null;
+                            canExitFromCheckMateW = true;
+                        }
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0]-1, tmpWK[1]-1) && ((tmpWK[0] >=0 && tmpWK[0] < 8 )&&(tmpWK[1] >=0 && tmpWK[1] < 8)&&(tmpWK[0]-1 >=0)&&(tmpWK[1]-1 >=0))) {
-                    this.fields[tmpWK[0]-1][tmpWK[1]-1] = new King("K", 'w');
-                    this.fields[tmpWK[0]][tmpWK[1]] = null;
-                    if (isCheck()) {
-                        this.localwK[0] = tmpWK[0]+1;
-                        this.localwK[1] = tmpWK[1]+1;
-                        this.fields[tmpWK[0]-1][tmpWK[1]-1] = null;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        checkMate = "w";
-                    } else {
-                        this.localwK[0] = tmpWK[0] + 1;
-                        this.localwK[1] = tmpWK[1] + 1;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        this.fields[tmpWK[0] - 1][tmpWK[1] - 1] = null;
-                        canExitFromCheckMateW = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0] - 1, tmpWK[1] - 1) && ((tmpWK[0] >= 0 && tmpWK[0] < 8) && (tmpWK[1] >= 0 && tmpWK[1] < 8) && (tmpWK[0] - 1 >= 0) && (tmpWK[1] - 1 >= 0))) {
+                        this.fields[tmpWK[0] - 1][tmpWK[1] - 1] = new King("K", 'w');
+                        this.fields[tmpWK[0]][tmpWK[1]] = null;
+                        if (isCheck()) {
+                            this.localwK[0] = tmpWK[0] + 1;
+                            this.localwK[1] = tmpWK[1] + 1;
+                            this.fields[tmpWK[0] - 1][tmpWK[1] - 1] = null;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            checkMate = "w";
+                        } else {
+                            this.localwK[0] = tmpWK[0] + 1;
+                            this.localwK[1] = tmpWK[1] + 1;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            this.fields[tmpWK[0] - 1][tmpWK[1] - 1] = null;
+                            canExitFromCheckMateW = true;
+                        }
                     }
-                }
-                if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0]+1, tmpWK[1]-1) && ((tmpWK[0] >=0 && tmpWK[0] < 8 )&&(tmpWK[1] >=0 && tmpWK[1] < 8)&&tmpWK[0]+1 < 8 && (tmpWK[1]-1 >=0))) {
-                    this.fields[tmpWK[0]+1][tmpWK[1]-1] = new King("K", 'w');
-                    this.fields[tmpWK[0]][tmpWK[1]] = null;
-                    if (isCheck()) {
-                        this.localwK[0] = tmpWK[0]-1;
-                        this.localwK[1] = tmpWK[1]+1;
-                        this.fields[tmpWK[0]+1][tmpWK[1]-1] = null;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        checkMate = "w";
-                    } else {
-                        this.localwK[0] = tmpWK[0] - 1;
-                        this.localwK[1] = tmpWK[1] + 1;
-                        this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
-                        this.fields[tmpWK[0] + 1][tmpWK[1] - 1] = null;
-                        canExitFromCheckMateW = true;
+                    if (canMoveWithAccountOfOtherFigures(tmpWK[0], tmpWK[1], tmpWK[0] + 1, tmpWK[1] - 1) && ((tmpWK[0] >= 0 && tmpWK[0] < 8) && (tmpWK[1] >= 0 && tmpWK[1] < 8) && tmpWK[0] + 1 < 8 && (tmpWK[1] - 1 >= 0))) {
+                        this.fields[tmpWK[0] + 1][tmpWK[1] - 1] = new King("K", 'w');
+                        this.fields[tmpWK[0]][tmpWK[1]] = null;
+                        if (isCheck()) {
+                            this.localwK[0] = tmpWK[0] - 1;
+                            this.localwK[1] = tmpWK[1] + 1;
+                            this.fields[tmpWK[0] + 1][tmpWK[1] - 1] = null;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            checkMate = "w";
+                        } else {
+                            this.localwK[0] = tmpWK[0] - 1;
+                            this.localwK[1] = tmpWK[1] + 1;
+                            this.fields[tmpWK[0]][tmpWK[1]] = new King("K", 'w');
+                            this.fields[tmpWK[0] + 1][tmpWK[1] - 1] = null;
+                            canExitFromCheckMateW = true;
+                        }
                     }
                 }
             }
