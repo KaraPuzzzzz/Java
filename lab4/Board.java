@@ -26,6 +26,8 @@ public class Board {
     int[] localwK = new int[2];
     ArrayList<String> pathToCheckMateB = new ArrayList<>();
     ArrayList<String> pathToCheckMateW = new ArrayList<>();
+    ArrayList<String> attackingFiguresB = new ArrayList<>();
+    ArrayList<String> attackingFiguresW = new ArrayList<>();
     public char getColorGaming() {
         return colorGaming;
     }
@@ -133,10 +135,63 @@ public class Board {
         return moveFlag;
     }
 
+    public boolean canAttackWithAccountOfOtherFigures(int row1, int col1, int row2, int col2) {
+        boolean attackFlag = true;
+        if (this.fields[row1][col1].canMove(row1, col1, row2, col2) && (row1 >=0 && row1 < 8 )&&(col1 >=0 && col1 < 8)&&(row2 >=0 && row2 < 8 )&&(col2 >=0 && col2 < 8) && !((row1==row2) && (col1==col2))) {
+            //TODO: нужна, чтобы проверять, может ли король передвинуться на другую клетку или могут ли другие фигуры передвинуться, чтобы прикрыть короля
+            for (int i = 1; i < 7 - (7 - Math.max(Math.abs(row1 - row2), Math.abs(col1 - col2))); i++) {
+                if (row1 - row2 > 0 && col1 - col2 > 0 && !this.fields[row1][col1].getName().equals("N")) {
+                    if (!(this.fields[row1 - i][col1 - i] == null) && this.fields[row1-i][col1-i].getColor() != this.fields[row2][col2].getColor()) {
+                        attackFlag = false;
+                        break;
+                    }
+                } else if (row1 - row2 > 0 && col1 - col2 < 0 && !this.fields[row1][col1].getName().equals("N")) {
+                    if (!(this.fields[row1 - i][col1 + i] == null) && this.fields[row1-i][col1+i].getColor() != this.fields[row2][col2].getColor()) {
+                        attackFlag = false;
+                        break;
+                    }
+                } else if (row1 - row2 < 0 && col1 - col2 > 0 && !this.fields[row1][col1].getName().equals("N")) {
+                    if (!(this.fields[row1 + i][col1 - i] == null) && this.fields[row1+i][col1-i].getColor() != this.fields[row2][col2].getColor()) {
+                        attackFlag = false;
+                        break;
+                    }
+                } else if (row1 - row2 < 0 && col1 - col2 < 0 && !this.fields[row1][col1].getName().equals("N")) {
+                    if (!(this.fields[row1 + i][col1 + i] == null) && this.fields[row1+i][col1+i].getColor() != this.fields[row2][col2].getColor()) {
+                        attackFlag = false;
+                        break;
+                    }
+                } else if (row1 - row2 < 0 && col1 - col2 == 0 && !this.fields[row1][col1].getName().equals("N")) {
+                    if (!(this.fields[row1 + i][col1] == null) && this.fields[row1+i][col1].getColor() != this.fields[row2][col2].getColor()) {
+                        attackFlag = false;
+                        break;
+                    }
+                } else if (row1 - row2 > 0 && col1 - col2 == 0 && !this.fields[row1][col1].getName().equals("N")) {
+                    if (!(this.fields[row1 - i][col1] == null) && this.fields[row1-i][col1].getColor() != this.fields[row2][col2].getColor()) {
+                        attackFlag = false;
+                        break;
+                    }
+                } else if (row1 - row2 == 0 && col1 - col2 < 0 && !this.fields[row1][col1].getName().equals("N")) {
+                    if (!(this.fields[row1][col1 + i] == null) && this.fields[row1][col1+i].getColor() != this.fields[row2][col2].getColor()) {
+                        attackFlag = false;
+                        break;
+                    }
+                } else if (row1 - row2 == 0 && col1 - col2 > 0 && !this.fields[row1][col1].getName().equals("N")) {
+                    if (!(this.fields[row1][col1 - i] == null) && this.fields[row1][col1-i].getColor() != this.fields[row2][col2].getColor()) {
+                        attackFlag = false;
+                        break;
+                    }
+                }
+            }
+        } else {
+            attackFlag = false;
+        }
+        return attackFlag;
+    }
+
     public boolean isCheck() {
         boolean otherFigureFlag = false;
-        //localbK = bK;
-        //localwK = wK;
+        boolean canAddAttackingFigureB = true;
+        boolean canAddAttackingFigureW = true;
         for (int i = 0; i < this.fields.length; i++) {
             for (int j = 0; j < this.fields[0].length; j++) {
                 if (!(this.fields[i][j] == null))
@@ -200,10 +255,18 @@ public class Board {
                                     }
                                     pathToCheckMateB.add((i) + " " + (j-k));
                                 }
+                                if (!otherFigureFlag && canAddAttackingFigureB) {
+                                    attackingFiguresB.add(i + " " + j);
+                                    canAddAttackingFigureB = false;
+                                }
                             }
                         }
                         if (otherFigureFlag) {
                             pathToCheckMateB.clear();
+                            if (!attackingFiguresB.isEmpty()) {
+                                attackingFiguresB.remove(attackingFiguresB.size()-1);
+                                canAddAttackingFigureB = true;
+                            }
                         } else {
                             this.colorOfCheckedKing = 'b';
                             return true;
@@ -212,54 +275,62 @@ public class Board {
                     }
 
                     if (this.fields[i][j].canMove(i, j, localwK[0], localwK[1]) && this.fields[i][j].getColor() == 'b') {
+                        otherFigureFlag = false;
                         for (int k = 1; k < 7 - (7 - Math.max(Math.abs(i - localwK[0]), Math.abs(j - localwK[1]))); k++) {
-                            if (i-localwK[0] > 0 && j - localwK[1] > 0  && !this.fields[i][j].getName().equals("N")) {
-                                if (!(this.fields[i-k][j-k]==null)) {// && this.fields[row1-i][col1-i].getColor() == figure.getColor()) {
-                                    otherFigureFlag = true;
-                                }
-                                pathToCheckMateW.add((i-k) + " " + (j-k));
-                            } else if (i-localwK[0] > 0 && j - localwK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
-                                if (!(this.fields[i-k][j+k]==null)) {// && this.fields[row1-i][col1+i].getColor() == figure.getColor()) {
-                                    otherFigureFlag = true;
-                                }
-                                pathToCheckMateW.add((i-k) + " " + (j+k));
-                            } else if (i-localwK[0] < 0 && j - localwK[1] > 0  && !this.fields[i][j].getName().equals("N")) {
-                                if (!(this.fields[i+k][j-k]==null)) {// && this.fields[row1+i][col1-i].getColor() == figure.getColor()) {
-                                    otherFigureFlag = true;
-                                }
-                                pathToCheckMateW.add((i+k) + " " + (j-k));
-                            } else if (i-localwK[0] < 0 && j - localwK[1] < 0  && !this.fields[i][j].getName().equals("N")) {
-                                if (!(this.fields[i+k][j+k]==null)) {// && this.fields[row1+i][col1+i].getColor() == figure.getColor()) {
-                                    otherFigureFlag = true;
-                                }
-                                pathToCheckMateW.add((i+k) + " " + (j+k));
-                            } else if (i-localwK[0] < 0 && j - localwK[1] == 0 && !this.fields[i][j].getName().equals("N")) {
-                                if (!(this.fields[i+k][j]==null)) { // && this.fields[row1+i][col1].getColor() == figure.getColor()) {
-                                    otherFigureFlag = true;
-                                }
-                                pathToCheckMateW.add((i+k) + " " + (j));
-                            } else if (i-localwK[0] > 0 && j - localwK[1] == 0  && !this.fields[i][j].getName().equals("N")) {
-                                if (!(this.fields[i-k][j]==null)) {// && this.fields[row1-i][col1].getColor() == figure.getColor()) {
-                                    otherFigureFlag = true;
-                                }
-                                pathToCheckMateW.add((i-k) + " " + (j));
-                            } else if (i-localwK[0] == 0 && j - localwK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
-                                if (!(this.fields[i][j+k]==null)) { // && this.fields[row1][col1+i].getColor() == figure.getColor()) {
-                                    otherFigureFlag = true;
-                                }
-                                pathToCheckMateW.add((i) + " " + (j+k));
-                            } else if (i-localwK[0] == 0 && j - localwK[1] > 0 && !this.fields[i][j].getName().equals("N")) {
-                                if (!(this.fields[i][j-k]==null)) {// && this.fields[row1][col1-i].getColor() == figure.getColor()) {
-                                    otherFigureFlag = true;
-                                }
-                                pathToCheckMateW.add((i) + " " + (j+k));
-                            }
                             if (!otherFigureFlag) {
-                                break;
+                                if (i - localwK[0] > 0 && j - localwK[1] > 0 && !this.fields[i][j].getName().equals("N")) {
+                                    if (!(this.fields[i - k][j - k] == null)) {// && this.fields[row1-i][col1-i].getColor() == figure.getColor()) {
+                                        otherFigureFlag = true;
+                                    }
+                                    pathToCheckMateW.add((i - k) + " " + (j - k));
+                                } else if (i - localwK[0] > 0 && j - localwK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
+                                    if (!(this.fields[i - k][j + k] == null)) {// && this.fields[row1-i][col1+i].getColor() == figure.getColor()) {
+                                        otherFigureFlag = true;
+                                    }
+                                    pathToCheckMateW.add((i - k) + " " + (j + k));
+                                } else if (i - localwK[0] < 0 && j - localwK[1] > 0 && !this.fields[i][j].getName().equals("N")) {
+                                    if (!(this.fields[i + k][j - k] == null)) {// && this.fields[row1+i][col1-i].getColor() == figure.getColor()) {
+                                        otherFigureFlag = true;
+                                    }
+                                    pathToCheckMateW.add((i + k) + " " + (j - k));
+                                } else if (i - localwK[0] < 0 && j - localwK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
+                                    if (!(this.fields[i + k][j + k] == null)) {// && this.fields[row1+i][col1+i].getColor() == figure.getColor()) {
+                                        otherFigureFlag = true;
+                                    }
+                                    pathToCheckMateW.add((i + k) + " " + (j + k));
+                                } else if (i - localwK[0] < 0 && j - localwK[1] == 0 && !this.fields[i][j].getName().equals("N")) {
+                                    if (!(this.fields[i + k][j] == null)) { // && this.fields[row1+i][col1].getColor() == figure.getColor()) {
+                                        otherFigureFlag = true;
+                                    }
+                                    pathToCheckMateW.add((i + k) + " " + (j));
+                                } else if (i - localwK[0] > 0 && j - localwK[1] == 0 && !this.fields[i][j].getName().equals("N")) {
+                                    if (!(this.fields[i - k][j] == null)) {// && this.fields[row1-i][col1].getColor() == figure.getColor()) {
+                                        otherFigureFlag = true;
+                                    }
+                                    pathToCheckMateW.add((i - k) + " " + (j));
+                                } else if (i - localwK[0] == 0 && j - localwK[1] < 0 && !this.fields[i][j].getName().equals("N")) {
+                                    if (!(this.fields[i][j + k] == null)) { // && this.fields[row1][col1+i].getColor() == figure.getColor()) {
+                                        otherFigureFlag = true;
+                                    }
+                                    pathToCheckMateW.add((i) + " " + (j + k));
+                                } else if (i - localwK[0] == 0 && j - localwK[1] > 0 && !this.fields[i][j].getName().equals("N")) {
+                                    if (!(this.fields[i][j - k] == null)) {// && this.fields[row1][col1-i].getColor() == figure.getColor()) {
+                                        otherFigureFlag = true;
+                                    }
+                                    pathToCheckMateW.add((i) + " " + (j + k));
+                                }
+                                if (!otherFigureFlag && canAddAttackingFigureW) {
+                                    attackingFiguresW.add(i + " " + j);
+                                    canAddAttackingFigureW = false;
+                                }
                             }
                         }
                         if (otherFigureFlag) {
                             pathToCheckMateW.clear();
+                            if (!attackingFiguresW.isEmpty()) {
+                                attackingFiguresW.remove(attackingFiguresW.size()-1);
+                                canAddAttackingFigureW = true;
+                            }
                         } else {
                             this.colorOfCheckedKing = 'w';
                             return true;
@@ -275,15 +346,17 @@ public class Board {
         for (int i = 0; i < pathToCheckMateB.size(); i++) {
             for (int j = 0; j < fields.length; j++) {
                 for (int k = 0; k < fields[0].length; k++) {
-                    if (!pathToCheckMateB.isEmpty() && (this.fields[j][k] != null)
+                    if ((this.fields[j][k] != null) && !pathToCheckMateB.isEmpty()
                             && (this.fields[j][k].canMove(j, k, Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(2)))))
                             && this.fields[j][k].getColor() == 'b'
-                            && canMoveWithAccountOfOtherFigures(j, k, Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(2))))) {
+                            && (canMoveWithAccountOfOtherFigures(j, k, Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(2))))
+                            || (!this.fields[j][k].getName().equals("N") && canAttackWithAccountOfOtherFigures(j, k, Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateB.get(i).charAt(2))))))) {
                         return true;
-                    } else if (!pathToCheckMateW.isEmpty() && (this.fields[j][k] != null)
+                    } else if ((this.fields[j][k] != null) && !pathToCheckMateW.isEmpty()
                             && (this.fields[j][k].canMove(j, k, Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(2)))))
                             && this.fields[j][k].getColor() == 'w'
-                            && canMoveWithAccountOfOtherFigures(j, k, Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(2))))){
+                            && (canMoveWithAccountOfOtherFigures(j, k, Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(2))))
+                            || (!this.fields[j][k].getName().equals("N") && canAttackWithAccountOfOtherFigures(j, k, Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(0))), Integer.parseInt(String.valueOf(pathToCheckMateW.get(i).charAt(2))))))){
                         return true;
                     }
                 }
